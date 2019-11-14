@@ -11,4 +11,21 @@ public class Model {
         
     }
     
+    public void importGroup(Map<String,String> textFieldsData, List<String> groups) throws SQLException{ 
+        /*
+        IMPORT ...
+            throw new SQLEXCEPTION;
+        */
+    }
+    
+    public void importNullGroup(Map<String,String> textFieldsData){
+        
+    }
+    
+    
+    public List<String> getNullGroups(){
+        List<String> nullGroups = new ArrayList<>();
+        nullGroups.add("Alex room");
+        return nullGroups;
+    }
 }

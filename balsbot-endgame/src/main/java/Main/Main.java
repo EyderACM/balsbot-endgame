@@ -9,7 +9,7 @@ public class Main {
    
     public static void main(String[] args) {
        AdminHouse_UI adminHouseUI = new AdminHouse_UI();
-       
+       AddGroup_UI addGroupUI = new AddGroup_UI();
     }
     
 }
