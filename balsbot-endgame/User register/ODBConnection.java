@@ -7,18 +7,18 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class DBConnection {
+public class ODBConnection {
     private Connection connection;
     private Properties connectionProps;
     private String dbms = "mysql";
-    private String serverName = "localhost";
+    private String serverName = "database-demo.cxmtkcnwi46y.us-east-1.rds.amazonaws.com";
     private String portNumber = "3306";
-    private String database = "acme";
+    private String database = "domotica_poo";
 
     private void getCredentials(){
         connectionProps = new Properties();
-        connectionProps.put("user", "Rodrigo");
-        connectionProps.put("password", "Estrellita10");
+        connectionProps.put("user", "admin");
+        connectionProps.put("password", "Axelpoo25");
     }
 
     public Connection getConnection() throws SQLException {
@@ -45,7 +45,7 @@ public class DBConnection {
 
     public static void main(String args[]){
         try{
-            Connection connection = new DBConnection().getConnection();
+            Connection connection = new ODBConnection().getConnection();
             connection.close();
         }catch (SQLException ex){
             System.out.println(ex.getMessage());
