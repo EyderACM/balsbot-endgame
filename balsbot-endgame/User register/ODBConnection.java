@@ -16,9 +16,14 @@ public class ODBConnection {
     private String database = "domotica_poo";
 
     private void getCredentials(){
+        ReadFile config = new ReadFile();
+        config.openFile();
+        String user = config.readUser();
+        String password = config.readPassword();
+        config.closeFile();
         connectionProps = new Properties();
-        connectionProps.put("user", "admin");
-        connectionProps.put("password", "Axelpoo25");
+        connectionProps.put("user", user);
+        connectionProps.put("password", password);
     }
 
     public Connection getConnection() throws SQLException {
