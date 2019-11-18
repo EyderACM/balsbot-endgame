@@ -5,11 +5,14 @@
  */
 package devicesdb;
 
+import java.io.File;
+import java.security.MessageDigest;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Properties;
+import java.util.*;
 
 
 /**
@@ -38,7 +41,8 @@ public class DevicesDB {
                 "jdbc:" + this.dbms + "://" +
                 this.serverName +
                 ":" + this.portNumber + "/"
-                 + this.database,
+                 + this.database
+                 + "?servetTimezone=UTC",
                  connectionProps);
         }
         System.out.println("Connection Established");
@@ -58,21 +62,44 @@ public class DevicesDB {
         return flag;
     }
     
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
+    private Scanner scan;
+    
+    public void openFile(){
+    
+        try{
+            scan = new Scanner(new File("devices.txt"));
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public void readFile(){
+        while(scan.hasNext()){
+            String device_id = scan.next();
+            String device_name = scan.next();
+            String device_type = scan.next();
+            String device_brand = scan.next();
+            String device_model = scan.next();
+            String state = scan.next();
+            
+            setStatement(device_id, device_name, device_type, device_brand, device_model, state);
+            System.out.println(device_id);
+        }
+    }
+    
+    public void setStatement(String id, String name, String type, String brand, String model, String state){
         try{
             PreparedStatement pstmt;
             Connection connection = new DevicesDB().getConnection();
             
             pstmt = connection.prepareStatement("insert into devices values(?,?,?,?,?,?)");
-            pstmt.setString(1, "6");
-            pstmt.setString(2, "Anita'sTv");
-            pstmt.setString(3, "TV");
-            pstmt.setString(4, "Panasonic");
-            pstmt.setString(5, "j20OJjinI93");
-            pstmt.setString(6, "0");
+            pstmt.setString(1, id);
+            pstmt.setString(2, encryptData(name));
+            pstmt.setString(3, encryptData(type));
+            pstmt.setString(4, encryptData(brand));
+            pstmt.setString(5, encryptData(model));
+            pstmt.setString(6, state);
+            
             pstmt.execute();
             
             connection.close();
@@ -80,6 +107,34 @@ public class DevicesDB {
         catch(SQLException ex){
             System.out.println(ex.getMessage());
         }
+    }
+    
+    public void closeFile(){
+        scan.close();
+    }
+    
+    private String encryptData(String data){
+        try{
+            MessageDigest digs = MessageDigest.getInstance("MD5");
+            digs.update(data.getBytes("UTF8"));
+            
+            String str = new String(digs.digest());
+            
+            return str;
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+            return "";
+        }
+    }
+    
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        DevicesDB devfile = new DevicesDB();
+        devfile.openFile();
+        devfile.readFile();
+        devfile.closeFile();
     }
     
 }

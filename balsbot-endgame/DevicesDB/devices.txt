@@ -1,0 +1,3 @@
+13 BULB_room3 bulb LG innu3r4 0
+14 tv_room3 TV Samsung efef4432 1
+15 speaker_room3 speaker LG 6556decc 0
