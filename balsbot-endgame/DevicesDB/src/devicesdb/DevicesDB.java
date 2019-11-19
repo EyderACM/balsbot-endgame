@@ -6,7 +6,7 @@
 package devicesdb;
 
 import java.io.File;
-import java.security.MessageDigest;
+import java.security.MessageDigest; //Change
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -22,10 +22,12 @@ import java.util.*;
 public class DevicesDB {
     private Connection connection;
     private Properties connectionProps;
-    private String dbms = "mysql";
-    private String serverName = "localhost";
-    private String portNumber = "3306";
-    private String database = "devices";
+    private final String dbms = "mysql";
+    private final String serverName = "localhost";
+    private final String portNumber = "3306";
+    private final String database = "devices";
+    private Scanner scan;
+    private Encrypt encrypt;
     
     private void getCredentials(){
         connectionProps = new Properties();
@@ -62,8 +64,6 @@ public class DevicesDB {
         return flag;
     }
     
-    private Scanner scan;
-    
     public void openFile(){
     
         try{
@@ -92,12 +92,17 @@ public class DevicesDB {
             PreparedStatement pstmt;
             Connection connection = new DevicesDB().getConnection();
             
+            String name_d = AESEnc("h29dn230jc38s61h", name);
+            String type_d = AESEnc("ijd3d3f9f4fwfknf", type);
+            String brand_d = AESEnc("eifeifjeifjifjei", brand);
+            String model_d = AESEnc("9fi4fjf44f4f4nt4", model);
+            
             pstmt = connection.prepareStatement("insert into devices values(?,?,?,?,?,?)");
             pstmt.setString(1, id);
-            pstmt.setString(2, encryptData(name));
-            pstmt.setString(3, encryptData(type));
-            pstmt.setString(4, encryptData(brand));
-            pstmt.setString(5, encryptData(model));
+            pstmt.setString(2, name_d);
+            pstmt.setString(3, type_d);
+            pstmt.setString(4, brand_d);
+            pstmt.setString(5, model_d);
             pstmt.setString(6, state);
             
             pstmt.execute();
@@ -109,23 +114,38 @@ public class DevicesDB {
         }
     }
     
+    private String AESEnc(String key, String data){
+        String encdata = null;
+        
+        try{
+            Encrypt aes = new Encrypt(key);
+            encdata = aes.encrypt(data);
+            System.out.println(encdata);
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }
+        
+        return encdata;
+    }
+    
     public void closeFile(){
         scan.close();
     }
     
-    private String encryptData(String data){
-        try{
-            MessageDigest digs = MessageDigest.getInstance("MD5");
-            digs.update(data.getBytes("UTF8"));
-            
-            String str = new String(digs.digest());
-            
-            return str;
-        }catch(Exception ex){
-            System.out.println(ex.getMessage());
-            return "";
-        }
-    }
+
+//    private String encryptData(String data){
+//        try{
+//            MessageDigest digs = MessageDigest.getInstance("MD5");
+//            digs.update(data.getBytes("UTF8"));
+//            
+//            String str = new String(digs.digest());
+//            
+//            return str;
+//        }catch(Exception ex){
+//            System.out.println(ex.getMessage());
+//            return "";
+//        }
+//    }
     
     /**
      * @param args the command line arguments

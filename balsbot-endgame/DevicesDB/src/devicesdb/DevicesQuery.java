@@ -38,6 +38,20 @@ public void closeDBQuery(){
     dbconnection.closeConnection();
 }
 
+public static String decrypt(String encryptData, String key){
+    
+    String decData = null;
+    
+    try{
+        Encrypt aes = new Encrypt(key);
+        decData = aes.decryptData(encryptData);
+    }catch(Exception ex){
+        System.out.println(ex.getMessage());
+    }
+    
+    return decData;
+}
+
 
 public static void main(String args[]){
        
@@ -45,11 +59,12 @@ public static void main(String args[]){
         ResultSet  rs = new DevicesQuery().getDevicesInfo();
         String records ="";
         while(rs.next()){
+            
         records += rs.getInt("id")+ "\t" +
-                   rs.getString("device_name") + "\t" +
-                   rs.getString("device_type")+ "\t" +
-                   rs.getString("device_brand")+ "\t" +
-                   rs.getString("device_model")+ "\t" +
+                   decrypt(rs.getString("device_name"), "h29dn230jc38s61h") + "\t" +
+                   decrypt(rs.getString("device_type"), "ijd3d3f9f4fwfknf") + "\t" +
+                   decrypt(rs.getString("device_brand"),"eifeifjeifjifjei") + "\t" +
+                   decrypt(rs.getString("device_model"),"9fi4fjf44f4f4nt4")+ "\t" +
                    rs.getInt("state")+"\n" ;
         }
         System.out.println(records);

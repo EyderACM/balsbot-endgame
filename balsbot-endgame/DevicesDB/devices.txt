@@ -1,3 +1,4 @@
-13 BULB_room3 bulb LG innu3r4 0
-14 tv_room3 TV Samsung efef4432 1
-15 speaker_room3 speaker LG 6556decc 0
+1 kitchenTV_room1 TV Panasonic 8d4fdhc3ffc 1
+2 light_living bulb HP fefnj3r3r2rf 0
+3 AC_room1 AC LG 94f4nefwfkf4ij 1
+4 kitchenTV_room1 AC Panasonic f3544f52ff4f 0
