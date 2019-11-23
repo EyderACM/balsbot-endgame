@@ -28,4 +28,24 @@ public class Model {
         nullGroups.add("Alex room");
         return nullGroups;
     }
+
+    public boolean findUser(String username) throws SQLException{
+        boolean exists = false;
+        /*
+         query...
+         */
+        return exists;
+    }
+
+    public boolean findInvited(String username) throws SQLException{
+        boolean exists = false;
+        /*
+         query...
+         */
+        return exists;
+    }
+
+    public void importInvited(Map<String,String> data) throws SQLException{
+
+    }
 }
